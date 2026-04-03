@@ -1,62 +1,75 @@
-# DriftTermIR (CIKM26 Short Paper Demo Repository)
+# DriftTermIR (CIKM 2026 Short Paper — Anonymous Demo)
 
-This repository provides a **minimal, review-stage demo** for our CIKM 2026 short track submission:
+This repository provides a **minimal, review-stage demo** for our anonymous CIKM 2026 short paper submission:
 
 **“Spectral Drift Monitoring of Contextual Embeddings for Multi-Sense Semantic Change”**
 
-> **Review-stage note.**  
-> To support an *open-science* signal during the anonymous review period, we release a lightweight demo that reflects the **overall pipeline and code structure**.  
-> A **full, cleaned, and fully reproducible release** (complete configs/scripts, end-to-end runs, and documentation) will be provided **after acceptance**.
+> **Review-stage note (anonymity + open science).**  
+> During anonymous review, we release a lightweight demo that reflects the **core pipeline and code structure**.  
+> A **fully reproducible release** (complete configs/scripts, end-to-end runs, and documentation) will be provided **upon acceptance**.
 
 ---
 
-## 🧠 Overview
+## Why this matters for IR / IS
 
-Detecting how word meanings shift over time is essential to understanding language, technology, and society.  
-Our work introduces an **unsupervised semantic drift monitor** for contextual embeddings (e.g., BERT-family models) with an emphasis on **multi-sense** change and **interpretability**.
+Dynamic collections (news, patents, scientific literature) exhibit **term drift**: the meaning and neighborhood of a term changes over time.  
+This can cause **temporal vocabulary mismatch** and degrade downstream workflows such as:
+
+- **Query rewriting / expansion** for cross-temporal search
+- **Drift-aware monitoring & alerting** (e.g., emerging-technology tracking)
+- **Collection analytics** (neighborhood turnover, technology recombination signals)
+
+Our method is designed as a **lightweight, alignment-free drift monitor** that can **rank and alert** drifting terms and provide **interpretable** broadening vs. specialization signals.
+
+---
+
+## Overview of the approach
 
 At a high level, the approach:
-- adopts a distributional view of contextual representations (projected-Gaussian perspective),
-- monitors drift using a **covariance-spectrum (spectral) signal**,
-- supports interpretation via **multi-sense clustering** and **representative instance extraction**.
+
+- adopts a distributional view of contextual token embeddings (a **projected-Gaussian interpretation**),
+- measures drift using a **centered covariance-spectrum** statistic (spectral anisotropy / eigengap),
+- handles polysemy via **slice-local clustering** and **cluster-weighted aggregation**,
+- supports interpretation via **representative usage extraction** and visualization.
+
+This makes the monitor suitable as a **plug-in module** in IR pipelines: detect drift → trigger rewriting/alerts → support analysis.
 
 ---
 
-## ✅ What This Demo Provides
+## What this demo provides
 
 - A compact reference implementation of the main components (structure-level faithful to the paper):
-  - embedding IO and slice handling,
+  - slice handling (time/domain windows),
   - spectral drift scoring utilities,
-  - optional clustering hooks for multi-sense analysis,
-  - qualitative inspection utilities (representative usages).
+  - optional multi-sense clustering hooks,
+  - qualitative inspection utilities (representative usages + visualization).
 
 ### Not included (yet)
 - End-to-end reproduction scripts and exact hyperparameter/config files
 - Preprocessed datasets and embedding caches
-- Full ablation, logging, and figure/table generation pipeline
+- Full ablation/logging + figure/table generation pipeline
 
-These will be released in the post-acceptance version.
+These will be included in the post-acceptance release.
 
 ---
 
-## 📁 Repository Structure
+## Repository structure
 
 <pre>
 ├── code/
 │   ├── detect_semantic_change.py         # Drift monitor demo (reference pipeline)
-│   ├── util.py                           # Utility functions for data loading, clustering, etc.
+│   ├── util.py                           # Utilities: loading, clustering hooks, scoring
 │   ├── visualize_change_target_word.py   # Clustering + PCA projection for interpretability
-│   ├── extract_typical_instance.py       # Highlighting representative shifted usages
-│   └── patent_preprocess.py              # Tools for cleaning and processing USPTO patent texts
+│   ├── extract_typical_instance.py       # Representative usage extraction
+│   └── patent_preprocess.py              # USPTO text preprocessing helpers
 │
 ├── data/
-│   ├── data_description.pdf              # Overview of benchmark & domain datasets
-│   └── additional_resources/             # Custom stopword lists, Greek symbols, and filters for USPTO
+│   ├── data_description.pdf              # Dataset overview (benchmark & USPTO)
+│   └── additional_resources/             # Stopwords / symbols filters for USPTO
 │       ├── greek.txt
 │       ├── stopwords.txt
 │       └── symbols.txt
 </pre>
-
 
 ---
 
