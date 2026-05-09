@@ -23,7 +23,7 @@ Our method is designed as a **lightweight, alignment-free drift monitor** that c
 
 ---
 
-## Overview of the approach
+## Overview (Method at a glance)
 
 At a high level, the approach:
 
@@ -50,6 +50,15 @@ This makes the monitor suitable as a **plug-in module** in IR pipelines: detect 
 - Full ablation/logging + figure/table generation pipeline
 
 These will be included in the post-acceptance release.
+
+---
+
+## IR-facing usage patterns supported by the pipeline
+
+- Even though the method is task-agnostic, it maps cleanly to common IR maintenance / analytics workflows:
+  - Drift monitoring & alerting: Identify terms with high drift magnitude (and direction) between adjacent slices to flag likely vocabulary mismatch.
+  - Drift-aware query rewriting / expansion trigger: Use drift as a gate: expand only drift-trigger terms (rather than expanding everything), leveraging target-slice neighborhood terms as lightweight bridging vocabulary.
+  - Temporal analytics for technology tracking (USPTO): High-drift terms tend to exhibit stronger neighborhood turnover and broader cross-field association signals, useful for tracking emerging concepts and technology convergence.
 
 ---
 
